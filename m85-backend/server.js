@@ -3,6 +3,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const jwt = require('jwt-simple');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -114,12 +115,15 @@ async function initializeDatabase() {
 app.use(cors());
 app.use(express.json());
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, 'build')));
+
 // JWT Secret Key from environment
 const SECRET_KEY = process.env.SECRET_KEY || 'default_secret';
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('Backend is running!');
+app.get('/api', (req, res) => {
+    res.send('Backend API is running!');
 });
 
 app.post('/login', (req, res) => {
@@ -139,7 +143,7 @@ app.post('/login', (req, res) => {
 });
 
 // Chart data routes
-app.get('/chart1', (req, res) => {
+app.get('/api/chart1', (req, res) => {
     const query = 'SELECT month, value FROM summary_chart';
     db.query(query, (err, results) => {
         if (err) {
@@ -150,7 +154,7 @@ app.get('/chart1', (req, res) => {
     });
 });
 
-app.get('/chart2', (req, res) => {
+app.get('/api/chart2', (req, res) => {
     const query = 'SELECT application, value FROM reports_chart';
     db.query(query, (err, results) => {
         if (err) {
@@ -159,6 +163,11 @@ app.get('/chart2', (req, res) => {
         }
         res.json(results);
     });
+});
+
+// Fallback route to serve frontend index.html for unknown routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(port, () => {
