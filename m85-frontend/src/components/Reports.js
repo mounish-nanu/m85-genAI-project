@@ -9,7 +9,7 @@ const Reports = () => {
     // Fetch data from the backend
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/chart2');
+        const response = await axios.get('https://seahorse-app-dtw2q.ondigitalocean.app/api/chart2');
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data for Reports chart:", error);

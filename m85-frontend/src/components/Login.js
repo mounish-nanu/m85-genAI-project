@@ -16,7 +16,7 @@ const Login = ({ setIsAuthenticated }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3000/login', { username, password });
+      const response = await axios.post('https://seahorse-app-dtw2q.ondigitalocean.app/login', { username, password });
 
       if (response.data.token) {
         setToken(response.data.token);

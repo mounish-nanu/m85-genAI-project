@@ -9,7 +9,7 @@ const Summary = () => {
     // Fetch data from the backend
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/chart1');
+        const response = await axios.get('https://seahorse-app-dtw2q.ondigitalocean.app/api/chart1');
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data for Summary chart:", error);
